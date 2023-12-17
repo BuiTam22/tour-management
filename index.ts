@@ -3,8 +3,12 @@ import express, {Express, Request, Response} from 'express';
 const app : Express = express();
 const port: number = 3000;
 
+
+app.set("views", "./views");
+app.set("view engine", "pug");
+
 app.get('/', async(req: Request, res: Response) =>{
-    res.send("Trang chủ");
+    res.render('client/pages/tours/index.pug');
 })
 
 app.listen(port, () =>{
