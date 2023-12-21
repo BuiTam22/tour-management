@@ -1,32 +1,17 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from "dotenv";
-import sequelize from "./config/database";
-import Tour from './models/tour.model';
+import clientRoutes from './routes/client/index.route';
 
 dotenv.config();
 
-sequelize;
 const app: Express = express();
-const port: number = 3000;
+const port: number = parseInt(process.env.PORT) || 3000;
 
 
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-app.get('/', async (req: Request, res: Response) => {
-    try {
-        const tours = await Tour.findAll({
-            raw: true
-        });
-
-        res.render("client/pages/tours/index",{
-            tours: tours
-        })
-    } catch (error) {
-        console.error("Error querying tours:", error);
-        res.status(500).send("Internal Server Error");
-    }
-})
+clientRoutes(app);
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
