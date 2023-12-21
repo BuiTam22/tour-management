@@ -1,22 +1,9 @@
 import { Request, Response } from "express";
 import { Router } from "express";
 import Tour from "../../models/tour.model";
-
+import * as controller from "../../controllers/client/tour.controller";
 const router: Router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
-    try {
-        const tours = await Tour.findAll({
-            raw: true
-        });
-
-        res.render("client/pages/tours/index", {
-            tours: tours
-        })
-    } catch (error) {
-        console.error("Error querying tours:", error);
-        res.status(500).send("Internal Server Error");
-    }
-})
+router.get("/", controller.index);
 
 export const tourRoutes: Router = router;
