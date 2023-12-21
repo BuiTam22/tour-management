@@ -13,7 +13,7 @@ const sequelize = new Sequelize(
         dialect: "mssql",
         dialectOptions: {
             options: {
-                encrypt: false, // Hoặc true tùy thuộc vào cấu hình của SQL Server
+                encrypt: false, 
             },
         },
     }
