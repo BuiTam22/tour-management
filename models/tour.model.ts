@@ -1,4 +1,4 @@
-import { DataType, DataTypes } from "sequelize";
+import {  DataTypes } from "sequelize";
 import sequelize from "../config/database";
 
 
@@ -17,7 +17,7 @@ const Tour = sequelize.define("Tour", {
         type: DataTypes.STRING(10)
     },
     images: {
-        type: DataTypes.STRING('long')
+        type: DataTypes.TEXT('long')
     },
     price: {
         type: DataTypes.INTEGER
@@ -26,7 +26,7 @@ const Tour = sequelize.define("Tour", {
         type: DataTypes.INTEGER
     },
     infomation: {
-        type: DataTypes.STRING('long')
+        type: DataTypes.TEXT('long')
     },
     schedule: {
         type: DataTypes.TEXT('long'),
