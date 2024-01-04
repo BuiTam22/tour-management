@@ -78,3 +78,5 @@ CREATE TABLE tours_categories(
 	CONSTRAINT FK_tours_categories_TO_categories FOREIGN KEY (category_id) REFERENCES categories(id)
 )
 
+
+
