@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-// import Tour from "../../models/tour.model";
+import Tour from "../../models/tour.model";
 import sequelize from "../../config/database";
 import { QueryTypes } from "sequelize";
 
@@ -22,20 +22,48 @@ export const index = async (req: Request, res: Response) => {
             AND categories.status = 'active'
             AND tours.deleted = 0
             AND tours.status = 'active'
-    `,{
+    `, {
         // trành bị mảng lồng khi trả về kết quả
         type: QueryTypes.SELECT
     })
- 
-    tours.forEach(tour =>{
-        if(tour["images"]){
+
+    tours.forEach(tour => {
+        if (tour["images"]) {
             const images = JSON.parse(tour["images"]);
             tour["image"] = images[0];
         }
-        tour["price_special"] = tour["price"] * (1 - (tour["discount"]/100))
+        tour["price_special"] = tour["price"] * (1 - (tour["discount"] / 100))
     })
     res.render("client/pages/tours/index", {
         pageTitle: "Danh sách tour",
         tours: tours
     });
+}
+
+
+// [GET] /tours/detail/:slugTour
+export const detail = async (req: Request, res: Response) => {
+    const slugTour = req.params.slugTour
+
+    let tour = await Tour.findAll({
+        where: {
+            deleted: false,
+            status: "active",
+            slug: slugTour
+        },
+        raw: true
+    });
+    const detailTour = tour[0];
+    let images = [];
+
+    if (detailTour["images"]) {
+        images = JSON.parse(detailTour["images"]);
+        detailTour["images"] = images
+    }
+    detailTour["price_special"] = detailTour["price"] * (1 - (detailTour["discount"] / 100))
+
+    res.render("client/pages/tours/detail", {
+        pageTitle: tour[0]["title"],
+        tour: detailTour
+    })
 }
