@@ -1,20 +1,21 @@
 ﻿CREATE DATABASE tour_management
 use tour_management
 
+--tạo table tours
  CREATE TABLE tours(
 	id INT NOT NULL IDENTITY,
-	title varchar(255) not null,
-	code varchar(10),
-	images varchar(max),
+	title nvarchar(255) not null,
+	code nvarchar(10),
+	images nvarchar(max),
 	price int,
 	discount int,
-	infomation varchar(max),
-	schedule varchar(max),
+	infomation nvarchar(max),
+	schedule nvarchar(max),
 	timeStart datetime null,
 	stock int,
-	status varchar(20),
+	status nvarchar(20),
 	possition int,
-	slug varchar(255) not null,
+	slug nvarchar(255) not null,
 	deleted bit,
 	deletedAt datetime null,
 	createdAt datetime null,
@@ -22,11 +23,7 @@ use tour_management
 	PRIMARY KEY(id)
  )
 
-
---Update lại toàn bộ các trường có kiểu varchar(n) thành nvarchar(n)
-alter table tours
-alter column slug nvarchar(255) 
-
+--insert vào table tours
 INSERT INTO tours (title, code, images, price, discount, infomation, schedule, timeStart, stock, status, position, slug, deleted, deletedAt, createdAt, updatedAt)
 VALUES
 (N'Tour Hạ Long', 'TOUR000001', '["https://backend.daca.vn/assets/tour/images/tour-ha-long.jpg", "https://backend.daca.vn/assets/tour/images/tour-ha-long-2.jpg", "https://backend.daca.vn/assets/tour/images/tour-ha-long-3.jpg"]', 1500000, 10, N'Duyệt thác, thăm đảo', N'Ngày 1: Duyệt thác\nNgày 2: Thăm đảo', '2023-01-15 08:00:00', 50, 'active', 1, 'tour-ha-long', 0, NULL, GETDATE(), GETDATE()),
@@ -40,11 +37,13 @@ VALUES
 (N'Tour Vịnh Lan Hạ', 'TOUR000009', '["https://backend.daca.vn/assets/tour/images/tau-tour-vinh-lan-ha.jpg"]', 2600000, 18, N'Thăm đảo Quan Lạn, tắm biển Vân Đồn', N'Ngày 1: Đảo Quan Lạn\nNgày 2: Tắm biển Vân Đồn', '2023-09-10 16:15:00', 48, 'active', 9, 'vinh-lan-ha', 0, NULL, GETDATE(), GETDATE()),
 (N'Tour Miền Tây', 'TOUR000010', '["https://backend.daca.vn/assets/tour/images/tour-mien-tay.jpg"]', 1700000, 10, N'Thăm cánh đồng lúa, đi cồn', N'Ngày 1: Cánh đồng lúa\nNgày 2: Đi cồn', '2023-10-05 17:00:00', 42, 'active', 10, 'mien-tay-mat-nuoc', 0, NULL, GETDATE(), GETDATE());
 
+
+--tạo table categories
 CREATE TABLE categories(
 	id INT NOT NULL IDENTITY,
-	title varchar(255) not null,
+	title nvarchar(255) not null,
 	image varchar(max),
-	description varchar(max),
+	description nvarchar(max),
 	status varchar(20),
 	position int,
 	slug varchar(255) not null,
@@ -55,7 +54,7 @@ CREATE TABLE categories(
 	PRIMARY KEY(id)
 )
 
-
+--insert vào table categories
 INSERT INTO categories (title, image, description, status, position, slug, deleted, deletedAt, createdAt, updatedAt)
 VALUES
 (N'Du lịch trong nước', 'https://backend.daca.vn/assets/tour/images/du-lich-trong-nuoc.jpg', N'Các tour du lịch trong Việt Nam', 'active', 1, 'du-lich-trong-nuoc', 0, NULL, GETDATE(), GETDATE()),
@@ -68,14 +67,14 @@ VALUES
 (N'Tour giáo dục', 'https://backend.daca.vn/assets/tour/images/tour-giao-duc.jpg', N'Các tour học thuật và giáo dục', 'active', 8, 'tour-giao-duc', 0, NULL, GETDATE(), GETDATE()),
 (N'Tour thể thao', 'https://backend.daca.vn/assets/tour/images/tour-the-thao.jpg', N'Các tour liên quan đến hoạt động thể thao', 'active', 9, 'tour-the-thao', 0, NULL, GETDATE(), GETDATE()),
 (N'Tour gia đình', 'https://backend.daca.vn/assets/tour/images/tour-gia-dinh.jpg', N'Các tour phù hợp cho cả gia đình', 'active', 10, 'tour-gia-dinh', 0, NULL, GETDATE(), GETDATE());
-delete categories
 
-insert into categories (title, image, description, status, position, slug, deleted, deletedAt, createdAt, updatedAt) values
-(N'Du lịch trong nước', null, null, null, null, 'đu lịch', null, null, null, null)
-SELECT [id], [title], [image], [description], [status], [position], [slug], [deleted], [deletedAt], [createdAt], [updatedAt] FROM [categories] AS [Category] WHERE [Category].[deleted] = 0 AND [Category].[status] = N'active'
+
+--tạo table tours_categories
 CREATE TABLE tours_categories(
 	tour_id INT,
 	category_id INT,
 	PRIMARY KEY (tour_id, category_id),
+	CONSTRAINT FK_tours_categories_TO_tours FOREIGN KEY (tour_id) REFERENCES tours(id),
+	CONSTRAINT FK_tours_categories_TO_categories FOREIGN KEY (category_id) REFERENCES categories(id)
 )
 
