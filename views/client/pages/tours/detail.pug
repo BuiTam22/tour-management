@@ -9,9 +9,20 @@ block main
         .col-6
           if(tour.images)
             .inner-images
-              each image in tour.images
-                .inner-image
-                  img(src=image)              
+              div(class="swiper imagesMain")
+                div(class="swiper-wrapper")
+                  each image in tour.images
+                    div(class="swiper-slide")
+                      img(src=image height ="300px" width="700px")
+                div(class="swiper-button-next")
+                div(class="swiper-button-prev")
+                br
+                br
+              div(class="swiper imagesThumb")
+                div(class="swiper-wrapper")
+                  each image in tour.images
+                    div(class="swiper-slide")
+                      img(src=image height="80px" width="130px") 
             
         .col-6
           .inner-title #{tour.title}
