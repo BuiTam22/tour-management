@@ -21,19 +21,19 @@ var imagesMain = new Swiper(".imagesMain", {
 // Thông báo thêm thành công vào giỏ hàng
 const alertAddCartSuccess = () => {
     const elementAlert = document.querySelector("[alert-add-cart-success]");
-    if(elementAlert) {
-      elementAlert.classList.remove("alert-hidden");
-  
-      setTimeout(() => {
-        elementAlert.classList.add("alert-hidden");
-      }, 3000);
-  
-      const closeAlert = elementAlert.querySelector("[close-alert]");
-      closeAlert.addEventListener("click", () => {
-        elementAlert.classList.add("alert-hidden");
-      });
+    if (elementAlert) {
+        elementAlert.classList.remove("alert-hidden");
+
+        setTimeout(() => {
+            elementAlert.classList.add("alert-hidden");
+        }, 3000);
+
+        const closeAlert = elementAlert.querySelector("[close-alert]");
+        closeAlert.addEventListener("click", () => {
+            elementAlert.classList.add("alert-hidden");
+        });
     }
-  }
+}
 // hết hàm thông báo
 
 
@@ -44,6 +44,19 @@ const cart = localStorage.getItem("cart");
 if (!cart) {
     localStorage.setItem("cart", JSON.stringify([]));
 }
+
+
+// Hiển thị thêm số lượng sản phẩm vào mini-cart
+const showMiniCart = () => {
+    const miniCart = document.querySelector("[mini-cart]");
+    if (miniCart) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        const totalQuantity = cart.reduce((sum, item) => sum + item.quantity, 0);
+        miniCart.innerHTML = totalQuantity;
+    }
+}
+showMiniCart();
+
 
 // Thêm tour vào cart
 const formAddToCart = document.querySelector("[form-add-to-cart]");
@@ -56,7 +69,7 @@ if (formAddToCart) {
 
         if (quantity > 0 && tourId) {
             const cart = JSON.parse(localStorage.getItem("cart"));
-    
+
             const indexExistTour = cart.findIndex(item => item.tourId == tourId);
 
             if (indexExistTour == -1) {
@@ -70,7 +83,9 @@ if (formAddToCart) {
 
             localStorage.setItem("cart", JSON.stringify(cart));
 
-            alertAddCartSuccess()
+            alertAddCartSuccess();
+            
+            showMiniCart();
         }
     });
 }
